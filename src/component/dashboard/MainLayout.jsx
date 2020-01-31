@@ -15,27 +15,13 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { Route, Switch, withRouter } from "react-router-dom";
 import { SideBar } from './Sidebar.jsx';
 import Dashboard from './Dashboard.jsx';
 import Offers from './Offers';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-function Copyright() {
-	return (
-	  <Typography variant="body2" color="textSecondary" align="center">
-		  {'Copyright © '}
-		  <a href="https://material-ui.com/">
-			  Your Website
-		  </a>{' '}
-		  {new Date().getFullYear()}
-		  {'.'}
-	  </Typography>
-	);
-}
+import Copyright from '../Copyright';
+import Offerwall from './Offerwall';
+import OfferwallWork from './OfferwallWork';
 
 const drawerWidth = 240;
 
@@ -109,7 +95,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function MainLayout({ match }) {
+function MainLayout({ match }) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(true);
 	const handleDrawerOpen = () => {
@@ -163,12 +149,19 @@ export default function MainLayout({ match }) {
 			  <div className={classes.appBarSpacer}/>
 			  <Container maxWidth="lg" className={classes.container}>
 				  <Switch>
-					  <Route path={`${match.path}/offer`}>
+					  <Route path={`${match.path}/offers`}>
 						  <Offers/>
 					  </Route>
 					  <Route path={`${match.path}/dashboard`}>
 						  <Dashboard/>
 					  </Route>
+					  <Route path={`${match.path}/offerwall/:net`}>
+						  <OfferwallWork/>
+					  </Route>
+					  <Route path={`${match.path}/offerwall`}>
+						  <Offerwall/>
+					  </Route>
+
 				  </Switch>
 
 				  <Box pt={4}>
@@ -179,3 +172,5 @@ export default function MainLayout({ match }) {
 	  </div>
 	);
 }
+
+export default withRouter(MainLayout);

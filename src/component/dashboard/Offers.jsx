@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import axios from 'axios';
+import * as Axios from '../../config/axios';
 
 export default function Offers() {
 	const classes = useStyles();
@@ -19,11 +19,9 @@ export default function Offers() {
 		items: [],
 		loading: true
 	});
-
 	useEffect(() => {
 		setFetchData({ loading: true });
-		console.log(fetchData.loading);
-		axios.get(process.env.REACT_APP_API_BASE_URL + "/adworkmedia/offer")
+		Axios.get(process.env.REACT_APP_API_BASE_URL + "/adworkmedia/offer")
 		  .then(response => {
 			  setFetchData({
 				  loading: false,
@@ -104,8 +102,6 @@ export default function Offers() {
 				  </CardActions>
 			  </Card>
 		  </Grid>)}
-
-
 	</Grid>
 }
 const useStyles = makeStyles(theme => ({
