@@ -10,11 +10,9 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Route, Switch, withRouter } from "react-router-dom";
 import { SideBar } from './Sidebar.jsx';
 import Dashboard from './Dashboard.jsx';
@@ -22,6 +20,11 @@ import Offers from './Offers';
 import Copyright from '../Copyright';
 import Offerwall from './Offerwall';
 import OfferwallWork from './OfferwallWork';
+import Button from '@material-ui/core/Button';
+import * as util from '../Util';
+import * as Axios from '../../config/axios';
+import ClaimPrize from './ClaimPrize';
+import Setting from './Setting';
 
 const drawerWidth = 240;
 
@@ -45,6 +48,10 @@ const useStyles = makeStyles(theme => ({
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
 		}),
+		'& a': {
+			textDecoration: "none",
+			color: "inherit"
+		}
 	},
 	appBarShift: {
 		marginLeft: drawerWidth,
@@ -92,18 +99,33 @@ const useStyles = makeStyles(theme => ({
 	container: {
 		paddingTop: theme.spacing(4),
 		paddingBottom: theme.spacing(4),
+		minHeight: "100%",
+		position: "relative"
+	},
+	pointBtn: {
+		width: "10em",
+		marginRight: "2em"
 	}
 }));
 
 function MainLayout({ match }) {
 	const classes = useStyles();
+	const [pageName, setPageName] = React.useState("");
 	const [open, setOpen] = React.useState(true);
+	const [point, setPoint] = React.useState(0);
 	const handleDrawerOpen = () => {
 		setOpen(true);
 	};
 	const handleDrawerClose = () => {
 		setOpen(false);
 	};
+	Axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/current`)
+	  .then(response => {
+		  setPoint(response.data.point &&  response.data.point !== 'null' ? response.data.point : point);
+	  }).catch(err => {
+		util.clearAccessToken();
+		window.location.href = "/signin";
+	})
 
 	return (
 	  <div className={classes.root}>
@@ -120,13 +142,15 @@ function MainLayout({ match }) {
 					  <MenuIcon/>
 				  </IconButton>
 				  <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-					  Dashboard
+					  {pageName}
 				  </Typography>
-				  <IconButton color="inherit">
-					  <Badge badgeContent={4} color="secondary">
-						  <NotificationsIcon/>
-					  </Badge>
-				  </IconButton>
+				  <Button className={classes.pointBtn} variant="contained">{point} POINT</Button>
+				  <Button variant="contained" color="secondary"
+						  onClick={() => {
+							  util.clearAccessToken();
+							  window.location.href = "/signin";
+						  }}
+				  >Logout</Button>
 			  </Toolbar>
 		  </AppBar>
 		  <Drawer
@@ -150,18 +174,23 @@ function MainLayout({ match }) {
 			  <Container maxWidth="lg" className={classes.container}>
 				  <Switch>
 					  <Route path={`${match.path}/offers`}>
-						  <Offers/>
+						  <Offers setPageName={setPageName}/>
 					  </Route>
 					  <Route path={`${match.path}/dashboard`}>
-						  <Dashboard/>
+						  <Dashboard setPageName={setPageName}/>
 					  </Route>
 					  <Route path={`${match.path}/offerwall/:net`}>
-						  <OfferwallWork/>
+						  <OfferwallWork setPageName={setPageName}/>
 					  </Route>
 					  <Route path={`${match.path}/offerwall`}>
-						  <Offerwall/>
+						  <Offerwall setPageName={setPageName}/>
 					  </Route>
-
+					  <Route path={`${match.path}/claim`}>
+						  <ClaimPrize setPageName={setPageName}/>
+					  </Route>
+					  <Route path={`${match.path}/setting`}>
+						  <Setting setPageName={setPageName}/>
+					  </Route>
 				  </Switch>
 
 				  <Box pt={4}>

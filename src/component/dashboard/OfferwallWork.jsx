@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import * as Axios from '../../config/axios';
 import { withRouter } from 'react-router-dom';
 
-function OfferwallWork({ match }) {
-	const [userId, setUserId] = useState("");
+function OfferwallWork({ match, setPageName }) {
+	const [wallUrl, setWallUrl] = useState("");
+	setPageName(match.params.net);
 	if (match.params.net === "adworkmedia") {
 		Axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/current`)
 		  .then(response => {
-			  setUserId(`${"http://lockwall.xyz/wall/5Yz"}/${response.data}`)
+			  setWallUrl(`${"http://lockwall.xyz/wall/5Yz"}/${response.data.id}`)
 		  })
 		  .catch(err => console.log(err));
 	}
 
 	return <>
-		<iframe src={userId} width="900px" height="1000px"
+		<iframe src={wallUrl} width="900px" height="1000px"
 				style={{
 					border: "0",
 					padding: "0",

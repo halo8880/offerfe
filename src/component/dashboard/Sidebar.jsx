@@ -4,6 +4,8 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Bookmark from '@material-ui/icons/Bookmark';
+import Settings from '@material-ui/icons/Settings';
+import AttachMoney from '@material-ui/icons/AttachMoney';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,6 +44,22 @@ export function SideBar({ match }) {
 					<Bookmark/>
 				</ListItemIcon>
 				<ListItemText primary="Offerwalls"/>
+			</ListItem>
+		</Link>
+		<Link to={`${match.url}/claim`}>
+			<ListItem button>
+				<ListItemIcon>
+					<AttachMoney/>
+				</ListItemIcon>
+				<ListItemText primary="Claim Prizes"/>
+			</ListItem>
+		</Link>
+		<Link to={`${match.url}/setting`}>
+			<ListItem button>
+				<ListItemIcon>
+					<Settings/>
+				</ListItemIcon>
+				<ListItemText primary="Settings"/>
 			</ListItem>
 		</Link>
 	</div>

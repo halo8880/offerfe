@@ -7,10 +7,10 @@ import Orders from './Orders';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
-export default function Dashboard() {
+export default function Dashboard({setPageName}) {
 	const classes = useStyles();
 	const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
+	setPageName("Dashboard");
 	return <Grid container spacing={3}>
 		{/* Chart */}
 		<Grid item xs={12} md={8} lg={9}>

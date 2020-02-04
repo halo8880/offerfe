@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar/index';
 import Button from '@material-ui/core/Button/index';
 import CssBaseline from '@material-ui/core/CssBaseline/index';
 import TextField from '@material-ui/core/TextField/index';
-import FormControlLabel from '@material-ui/core/FormControlLabel/index';
 import Link from '@material-ui/core/Link/index';
 import Grid from '@material-ui/core/Grid/index';
 import Box from '@material-ui/core/Box/index';
@@ -11,13 +10,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography/index';
 import { makeStyles } from '@material-ui/core/styles/index';
 import Container from '@material-ui/core/Container/index';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import { debounce } from '../Util';
 import Copyright from '../Copyright';
-
+import * as Axios from '../../config/axios';
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -40,19 +35,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignUp() {
+	const [error, setError] = useState(false);
 	const classes = useStyles();
 	const initialInfo = {
-		role: "PUBLISHER",
-		firstName: "",
-		lastName: "",
 		username: "",
-		email: "",
 		password: "",
-		skype: ""
+		paypal: ""
 	};
 	const [info, setInfo] = useState(initialInfo);
 	const submitForm = e => {
-		console.log(info);
+		Axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`, info)
+		  .then(response => {
+			  window.location.href = "/signin";
+		  }).catch(err => {
+			setError(true);
+		});
 		e.preventDefault();
 	}
 	return (
@@ -65,67 +62,11 @@ export default function SignUp() {
 			  <Typography component="h1" variant="h5">
 				  Sign up
 			  </Typography>
+			  {error && <Typography color={'error'} variant="h5">
+				  Please try again
+			  </Typography>}
 			  <form className={classes.form} onSubmit={submitForm}>
 				  <Grid container spacing={2}>
-					  <Grid item xs={12} sm={12}>
-						  <FormControl component="fieldset">
-							  <FormLabel component="legend">You are</FormLabel>
-							  <RadioGroup aria-label="role" value={info.role} name="role"
-										  onChange={e => setInfo({
-											  ...info,
-											  role: e.target.value
-										  })}>
-								  <FormControlLabel value="PUBLISHER" control={<Radio/>} label="Publisher"/>
-								  <FormControlLabel value="ADVERTISER" control={<Radio/>} label="Advertiser"/>
-							  </RadioGroup>
-						  </FormControl>
-					  </Grid>
-					  <Grid item xs={12} sm={6}>
-						  <TextField
-							autoComplete="fname"
-							name="firstName"
-							variant="outlined"
-							required
-							fullWidth
-							id="firstName"
-							label="First Name"
-							autoFocus
-							onChange={e => debounce(setInfo({
-								...info,
-								firstName: e.target.value
-							}), 500)}
-						  />
-					  </Grid>
-					  <Grid item xs={12} sm={6}>
-						  <TextField
-							variant="outlined"
-							required
-							fullWidth
-							id="lastName"
-							label="Last Name"
-							name="lastName"
-							autoComplete="lname"
-							onChange={e => debounce(setInfo({
-								...info,
-								lastName: e.target.value
-							}), 500)}
-						  />
-					  </Grid>
-					  <Grid item xs={12}>
-						  <TextField
-							variant="outlined"
-							required
-							fullWidth
-							id="username"
-							label="Username"
-							name="username"
-							autoComplete="username"
-							onChange={e => debounce(setInfo({
-								...info,
-								username: e.target.value
-							}), 500)}
-						  />
-					  </Grid>
 					  <Grid item xs={12}>
 						  <TextField
 							variant="outlined"
@@ -138,8 +79,8 @@ export default function SignUp() {
 							type="email"
 							onChange={e => debounce(setInfo({
 								...info,
-								email: e.target.value
-							}), 500)}
+								username: e.target.value
+							}), 100)}
 						  />
 					  </Grid>
 					  <Grid item xs={12}>
@@ -155,21 +96,20 @@ export default function SignUp() {
 							onChange={e => debounce(setInfo({
 								...info,
 								password: e.target.value
-							}), 500)}
+							}), 100)}
 						  />
 					  </Grid>
 					  <Grid item xs={12}>
 						  <TextField
 							variant="outlined"
-							required
 							fullWidth
-							name="skype"
-							label="Skype ID"
-							id="skype"
+							name="paypal"
+							label="Paypal (Optional)"
+							id="paypal"
 							onChange={e => debounce(setInfo({
 								...info,
-								skype: e.target.value
-							}), 500)}
+								paypal: e.target.value
+							}), 100)}
 						  />
 					  </Grid>
 				  </Grid>
