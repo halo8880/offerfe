@@ -3,137 +3,106 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Axios from '../../config/axios';
 import * as util from '../Util';
 import clsx from 'clsx';
-import Copyright from "../Copyright";
-import Term from "../dashboard/static-pages/Term";
-import Default from "../dashboard/static-pages/Default";
+import Footer from "../dashboard/Footer";
 
-function StaticPageLayout({ match }) {
+export default function StaticPageLayout({ match }) {
 	const classes = useStyles();
-	const staticUrl = "static";
+	const [username, setUserName] = useState("");
+	const [loggedIn, setLoggedIn] = useState(false);
 
-	const handleScrollTop = () => {
-		document.body.scrollTop = 0;
+	const handleLogin = e => {
+		e.preventDefault();
+		const refBy = util.getRefByFromQueryString() ? util.getRefByFromQueryString() : util.getCookie("refBy");
+		Axios.post(`${process.env.REACT_APP_API_BASE_URL}/login`, {
+			username: username,
+			password: "123",
+			refBy
+		}).then(response => {
+			util.setAccessToken(response.data.token);
+			window.location.href = "/in/dashboard";
+		}).catch(err => {
+			console.log(err);
+		});
 	}
+
+	const handleLogout = e => {
+		util.clearAccessToken();
+		window.location.href = "/";
+	}
+
+	const handleGoToDashboard = e => {
+		window.location.href = "/in/dashboard";
+	}
+
+	Axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/current`)
+	  .then(response => {
+		  setLoggedIn(true);
+	  }).catch(err => {
+		util.clearAccessToken();
+		setLoggedIn(false);
+	})
 
 	return <>
 		<AppBar className={classes.appBar}>
 			<Toolbar className={classes.toolbar}>
-				<Typography component="h1" variant="h4" color="inherit" noWrap className={classes.title}>
+				<Typography component="h1" variant="h3" color="inherit" noWrap className={classes.title}>
 					<Link to="/">OffRewards</Link>
 				</Typography>
-				<div className={classes.appBarRight}>
-					<Button color="inherit">Login</Button>
-					<Typography component="p" variant="body1" color="inherit" noWrap className={classes.title}>
-						<Link to="/">Blog</Link>
-					</Typography>
-					<Typography component="p" variant="body1" color="inherit" noWrap className={classes.title}>
-						<Link to="/">About us</Link>
-					</Typography>
-				</div>
 			</Toolbar>
 		</AppBar>
-		<Container className={classes.middlePart}>
-			<Switch>
-				<Route path={`${match.path}/term`}>
-					<Term />
-				</Route>
-				<Route path={`${match.path}/policy`}>
-					this is Policy
-				</Route>
-				<Route path="/">
-					<Default />
-				</Route>
-			</Switch>
-		</Container>
-		<Container className={classes.footerContainer}>
+		<Container maxWidth={"xl"} className={classes.staticPageContainer}>
 			<Grid component={"div"} container spacing={3} className={classes.textGrid}>
-				<Grid item xs={12} sm={4} md={4} lg={4}>
-					<Typography variant={"h5"} gutterBottom>
-						Company
+				<Grid item xs={false} sm={false} md={3} lg={3}></Grid>
+				<Grid item xs={12} sm={12} md={6} lg={6}>
+					<Typography variant={"h3"} paragraph component={"p"} className={classes.introText}>
+						Earn Points,
+						Get Rewarded!
 					</Typography>
-					<div className={classes.footerInfoContainer}>
-						<div className={classes.companyInfo}>
-							<div>SAS POINTSPRIZES</div>
-							<div>8 Rue Des Remparts</div>
-							<div>Le Boulou</div>
-							<div>66160</div>
-							<div>France</div>
-						</div>
-						<div className={classes.registrationInfo}>
-							<div>Company Registration Number:</div>
-							<div>830 646 766 R.C.S. Perpignan</div>
-						</div>
+					<div className={classes.formGroup}>
+						{loggedIn ?
+						  <>
+							  <button onClick={handleGoToDashboard} type="button"
+									  className={clsx(classes.submitBtn, classes.goToDashBoardBtn)}>
+								  <Link to={"/in/dashboard"}>Go To Dashboard</Link>
+							  </button>
+							  <button onClick={handleLogout} type="button"
+									  className={clsx(classes.submitBtn, classes.logoutBtn)}>Logout
+							  </button>
+						  </>
+						  :
+						  <form onSubmit={handleLogin}>
+							  <input
+								autoComplete={"email"}
+								name={"email"}
+								type={"email"}
+								placeholder={"Email address"}
+								className={classes.input}
+								value={username}
+								onChange={e => setUserName(e.target.value)}
+							  />
+							  <button type={"submit"} className={classes.submitBtn}>Login Or Create Account</button>
+						  </form>}
 					</div>
-				</Grid>
-				<Grid item xs={12} sm={4} md={4} lg={4}>
-					<Typography variant={"h5"} gutterBottom>
-						Learn More
+					<Typography variant={"h5"} component={"p"} className={classes.introText}>
+						Earn Money Everyday & Get $10 Free Bonus Monthly!
 					</Typography>
-					<Grid component={"div"} container spacing={3} className={classes.textGrid}>
-						<Grid item xs={6} sm={6} md={6} lg={6}>
-							<div className={classes.footerInfoContainer}>
-								<Link to={`${staticUrl}/term`} className={classes.footerLink}>Term Of Use</Link>
-								<Link to={`${staticUrl}/policy`} className={classes.footerLink}>Privacy Policy</Link>
-								<Link to={`${staticUrl}/offers`} className={classes.footerLink}>Contact Us</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Help Center</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Video Tutorials</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Earnings Disclaimer</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Brand Guidelines</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Press Coverage</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Advertise Here</Link>
-							</div>
-						</Grid>
-						<Grid item xs={6} sm={6} md={6} lg={6}>
-							<div className={classes.footerInfoContainer}>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Affiliate Program</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Paid Surveys</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Newsletter</Link>
-								<Link to={`${match.url}/offers`} className={classes.footerLink}>Payment Proof</Link>
-							</div>
-						</Grid>
-					</Grid>
-				</Grid>
-				<Grid item xs={12} sm={4} md={4} lg={4}>
-					<Typography variant={"h5"} gutterBottom>
-						Latest Article
+					<Typography variant={"h6"} paragraph component={"p"} className={classes.introText}>
+						You don't need to manage your password, we manage everything through your email address.
+						Just enter your email address and start earning with us!
 					</Typography>
-					<div className={classes.footerInfoContainer}>
-						<div className={classes.articleContainer}>
-							<div className={classes.articleName}>
-								Tax Planning: Optimize And Reduce Your Taxes
-							</div>
-							<div className={classes.articleDate}>7th February 2020</div>
-						</div>
-						<div className={classes.articleContainer}>
-							<div className={classes.articleName}>
-								Tax Planning For Business Owners
-							</div>
-							<div className={classes.articleDate}>7th February 2020</div>
-						</div>
-						<div className={classes.articleContainer}>
-							<div className={classes.articleName}>
-								Final Fantasy Brave Exvius Guide
-							</div>
-							<div className={classes.articleDate}>7th February 2020</div>
-						</div>
-					</div>
-					<div className={classes.copyRight}>
-						<Copyright/>
-					</div>
 				</Grid>
 			</Grid>
 		</Container>
+		<Footer/>
 	</>
 }
 
-export default withRouter(StaticPageLayout);
 const useStyles = makeStyles(theme => ({
 	title: {
 		flexGrow: 1,
@@ -141,79 +110,114 @@ const useStyles = makeStyles(theme => ({
 	},
 	appBar: {
 		boxShadow: "none",
-		background: "#e7e7e7",
+		background: "rgba(63, 81, 181, 0)",
 		"& a": {
 			textDecoration: "none",
-			color: "black"
+			color: "white"
 		},
+		paddingTop: "1em",
+		paddingLeft: "3em",
+		paddingRight: "5em",
 		zIndex: theme.zIndex.drawer + 1,
 		transition: theme.transitions.create(['width', 'margin'], {
 			easing: theme.transitions.easing.sharp,
 			duration: theme.transitions.duration.leavingScreen,
 		}),
-		padding: "0 40px"
 	},
-	middlePart: {
-		maxWidth: "100%",
-		margin: "60px 0 0 0",
-		padding: "0"
-	},
-	footerContainer: {
-		background: "#f8f8f8",
-		color: "#333",
-		maxWidth: "100%",
-		margin: "0",
-		padding: "50px 30%"
-	},
-	footerInfoContainer: {
-		display: "grid"
-	},
-	footerLink: {
-		color: "#337ab7",
-		textDecoration: "none",
-		"&:hover": {
-			textDecoration: "underline"
+	staticPageContainer: {
+		position: "relative",
+		backgroundImage: "url(https://demos.creative-tim.com/material-kit-pro-react/static/media/office2.d57fa885.jpg)",
+		backgroundSize: "cover",
+		height: "100%",
+		minWidth: "100%",
+		alignItems: "center",
+		display: "flex",
+		// justifyContent: "center",
+		color: "#FFF",
+		"&::before": {
+			top: 0,
+			left: 0,
+			width: "100%",
+			height: "100%",
+			content: `''`,
+			display: "block",
+			zIndex: 1,
+			position: "absolute",
+			background: "rgba(0, 0, 0, 0.5)"
 		},
-		fontSize: "14px"
-	},
-	copyRight: {
-		"& p": {
-			position: "unset",
-			textAlign: "left"
+		"& >div": {
+			zIndex: 1,
 		}
 	},
-	companyInfo: {
-		fontSize: "14px",
-		fontWeight: "bold"
+	textGrid: {
+		// zIndex: 1,
 	},
-	registrationInfo: {
-		fontSize: "13px",
-		paddingTop: "8px"
+	inputGrid: {
+		// background: "white",
+		// borderRadius: "6px",
 	},
-	articleContainer: {
-		marginBottom: "12px",
-		fontSize: "14px"
+	introText: {
+		textAlign: "center"
 	},
-	articleName: {
-		color: "#337ab7",
-		fontWeight: "bold"
-	},
-	articleDate: {
-		color: "#888888"
-	},
-	appBarRight: {
-		display: "flex",
-		color: "black",
-		alignItems: "center",
-		"& button": {
-			background: "#5cb85c",
-			marginRight: "8px"
+	submitBtn: {
+		background: "#9c27b0",
+		border: 0,
+		height: "2.5rem",
+		borderRadius: "0 6px 6px 0",
+		width: "15em",
+		color: "white",
+		fontWeight: 600,
+		"& a": {
+			textDecoration: "none",
+			color: "inherit"
 		},
-		"& p": {
-			marginRight: "8px",
-			"&:hover": {
-				color: "#fff"
-			}
+		"&:hover": {
+			boxShadow: "0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2)",
+			backgroundColor: "#9c27b0"
+		},
+		"&:focus": {
+			outline: "none"
+		},
+		"&:active": {
+			background: "#9c27f0"
+		}
+	},
+	input: {
+		width: "20em",
+		height: "2.5rem",
+		border: 0,
+		paddingTop: 0,
+		paddingBottom: 0,
+		paddingLeft: "1em",
+		marginTop: 0,
+		marginBottom: 0,
+		borderRadius: "6px 0 0 6px",
+		"&:focus": {
+			outline: "none"
+		}
+	},
+	formGroup: {
+		display: "flex",
+		justifyContent: "center",
+		marginTop: "1em",
+		marginBottom: "1em",
+	},
+	goToDashBoardBtn: {
+		borderRadius: "6px",
+	},
+	logoutBtn: {
+		background: "#f50057",
+		borderRadius: "6px",
+		marginLeft: "1em",
+		"&:hover": {
+			boxShadow: "0 14px 26px -12px rgba(156, 39, 176, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2)",
+			backgroundColor: "#f50057"
+		},
+		"&:focus": {
+			outline: "none"
+		},
+		"&:active": {
+			background: "red"
 		}
 	}
 }));

@@ -1,11 +1,12 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import LandingPage from "./LandingPage";
 
 export default function Term(props) {
 	const classes = useStyles();
 	return (
-		<React.Fragment>
+		<LandingPage>
 			<Container className={classes.paragraphContainer}>
 				<h1 className={classes.paragraphTitle}>Preliminary</h1>
 				<p className={classes.paragraphContent}>
@@ -343,7 +344,7 @@ export default function Term(props) {
 					and permitted assigns of the company.
 				</p>
 			</Container>
-		</React.Fragment>
+		</LandingPage>
 	);
 }
 
