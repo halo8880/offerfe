@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link, withRouter } from 'react-router-dom';
 import Title from './Title';
 import * as Axios from '../../config/axios';
+import * as util from '../Util';
 
 function Offerwall({ match, setPageName }) {
 	const classes = useStyles();
@@ -33,12 +34,12 @@ function Offerwall({ match, setPageName }) {
 				<Divider className={classes.divider}/>
 				<Grid container spacing={3} className={classes.offerWallGrid}>
 					{listWalls.map(wall =>
-					  <Grid item xs={12} sm={6} md={3} className={classes.offerWallGridItem}>
-						<Link to={`${match.url}/${wall.networkName}`}>
+					  <Grid key={util.uuidv4()} item xs={12} sm={6} md={3} className={classes.offerWallGridItem}>
+						<Link to={`${match.url}/${wall.networkName}/${wall.id}`}>
 							<Card className={classes.card}>
 								<CardMedia
 								  className={classes.cardMedia}
-								  image={wall.image}
+								  image={wall.image && wall.image !== 'null' ? wall.image : "https://source.unsplash.com/random"}
 								  title={wall.networkName}
 								/>
 								<CardContent className={classes.cardContent}>

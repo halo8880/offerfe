@@ -59,7 +59,7 @@ function ClaimPrize({ match, setPageName }) {
 						  {paragraph}
 					  </Typography>)}
 				</Grid>
-				<Grid item xs={0} md={1} lg={1}>
+				<Grid item xs={false} md={1} lg={1}>
 				</Grid>
 				<Grid item xs={6} md={4} lg={4}>
 					<Typography

@@ -11,7 +11,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Info from '@material-ui/icons/InfoOutlined';
 
 export default function ReferralLink({ setPageName, userId }) {
-	console.log("userId: ", userId);
 	setPageName("Referral Link");
 	const classes = useStyles();
 	return <Grid container spacing={3}>

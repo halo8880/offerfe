@@ -192,7 +192,7 @@ function MainLayout({ match }) {
 					  <Route path={`${match.path}/dashboard`}>
 						  <Dashboard setPageName={setPageName}/>
 					  </Route>
-					  <Route path={`${match.path}/offerwall/:net`}>
+					  <Route path={`${match.path}/offerwall/:net/:netId`}>
 						  <OfferwallWork setPageName={setPageName}/>
 					  </Route>
 					  <Route path={`${match.path}/offerwall`}>

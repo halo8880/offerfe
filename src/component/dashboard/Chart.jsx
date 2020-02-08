@@ -7,7 +7,6 @@ export default function Chart({ chartData }) {
 	const theme = useTheme();
 
 	const convertedChartData = chartData.map(each => ({ time: each.time, amount: each.numberOfLeads }));
-	console.log(convertedChartData);
 	return (
 	  <React.Fragment>
 		  <Title>This Month</Title>
