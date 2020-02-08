@@ -8,8 +8,8 @@ export default function Copyright() {
 	return (
 	  <Typography className={classes.copyright} variant="body2" color="textSecondary" align="center">
 		  {'Copyright © '}
-		  <Link color="inherit" href="#">
-			  Your Website
+		  <Link color="inherit" href={`${process.env.REACT_APP_FRONTEND_BASE_URL}`}>
+			  OffRewards.com
 		  </Link>{' '}
 		  {new Date().getFullYear()}
 		  {'.'}

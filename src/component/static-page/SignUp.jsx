@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography/index';
 import { makeStyles } from '@material-ui/core/styles/index';
 import Container from '@material-ui/core/Container/index';
-import { debounce } from '../Util';
+import * as util from '../Util';
 import Copyright from '../Copyright';
 import * as Axios from '../../config/axios';
 
@@ -40,17 +40,23 @@ export default function SignUp() {
 	const initialInfo = {
 		username: "",
 		password: "",
-		paypal: ""
+		paypal: "",
+		refBy: ""
 	};
 	const [info, setInfo] = useState(initialInfo);
 	const submitForm = e => {
-		Axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`, info)
+		e.preventDefault();
+		const refBy = util.getRefByFromQueryString() ? util.getRefByFromQueryString() : util.getCookie("refBy");
+		Axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`, {
+			...info,
+			refBy
+		})
 		  .then(response => {
 			  window.location.href = "/signin";
 		  }).catch(err => {
 			setError(true);
 		});
-		e.preventDefault();
+
 	}
 	return (
 	  <Container component="main" maxWidth="xs">
@@ -77,7 +83,7 @@ export default function SignUp() {
 							name="email"
 							autoComplete="email"
 							type="email"
-							onChange={e => debounce(setInfo({
+							onChange={e => util.debounce(setInfo({
 								...info,
 								username: e.target.value
 							}), 100)}
@@ -93,7 +99,7 @@ export default function SignUp() {
 							type="password"
 							id="password"
 							autoComplete="current-password"
-							onChange={e => debounce(setInfo({
+							onChange={e => util.debounce(setInfo({
 								...info,
 								password: e.target.value
 							}), 100)}
@@ -106,7 +112,7 @@ export default function SignUp() {
 							name="paypal"
 							label="Paypal (Optional)"
 							id="paypal"
-							onChange={e => debounce(setInfo({
+							onChange={e => util.debounce(setInfo({
 								...info,
 								paypal: e.target.value
 							}), 100)}
@@ -114,12 +120,11 @@ export default function SignUp() {
 					  </Grid>
 				  </Grid>
 				  <Button
-					type="Submit"
+					type="submit"
 					fullWidth
 					variant="contained"
 					color="primary"
 					className={classes.submit}
-					onClick={submitForm}
 				  >
 					  Sign Up
 				  </Button>

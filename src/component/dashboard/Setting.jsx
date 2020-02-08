@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Title from './Title';
 import clsx from 'clsx';
 import * as Axios from '../../config/axios';
+import Divider from '@material-ui/core/Divider';
+import * as util from '../Util';
 
 function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -41,7 +43,10 @@ export default function Setting({ setPageName }) {
 		Axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/current`)
 		  .then(response => {
 			  setPaypal(response.data.paypal);
-		  })
+		  }).catch(error => {
+			util.clearAccessToken();
+			window.location.href = "/";
+		})
 	}, []);
 
 
@@ -53,13 +58,14 @@ export default function Setting({ setPageName }) {
 				  <Paper className={clsx(classes.paperFixedHeight, classes.paper)}>
 					  <form onSubmit={submitChangePaypal}>
 						  <Title>Setup payment methods</Title>
+						  <Divider className={classes.divider}/>
 						  <Typography className={classes.paperDesc}>
 							  Set up the payment information so that we can pay you
 						  </Typography>
 						  <Grid container spacing={3} className={classes.paymentGrid}>
 							  <Grid item xs={12} md={4} lg={4}>
 								  <Typography className={classes.inputLabel} component={"div"}
-											  for="paypal">Paypal:</Typography>
+											  htmlFor="paypal">Paypal:</Typography>
 								  <TextField
 									className={classes.paypalInput}
 									id="paypal"
@@ -96,7 +102,7 @@ export default function Setting({ setPageName }) {
 }
 const useStyles = makeStyles(theme => ({
 	paperFixedHeight: {
-		// height: "260px"
+		minHeight: "260px"
 	},
 	paper: {
 		padding: "1em"
@@ -118,5 +124,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	deleteTitle: {
 		color: "red"
+	},
+	divider: {
+		marginBottom: "2rem"
 	}
 }));

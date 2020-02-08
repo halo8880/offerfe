@@ -13,7 +13,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { Route, Switch, withRouter } from "react-router-dom";
+import { Link, Route, Switch, withRouter } from "react-router-dom";
 import { SideBar } from './Sidebar.jsx';
 import Dashboard from './Dashboard.jsx';
 import Offers from './Offers';
@@ -25,6 +25,7 @@ import * as util from '../Util';
 import * as Axios from '../../config/axios';
 import ClaimPrize from './ClaimPrize';
 import Setting from './Setting';
+import ReferralLink from './ReferralLink';
 
 const drawerWidth = 240;
 
@@ -68,7 +69,14 @@ const useStyles = makeStyles(theme => ({
 		display: 'none',
 	},
 	title: {
+		fontWeight: 600,
 		flexGrow: 1,
+		fontFamily: "'Courgette', cursive",
+		fontSize: "2rem",
+		"& a": {
+			textDecoration: "none",
+			color: "inherit"
+		}
 	},
 	drawerPaper: {
 		position: 'relative',
@@ -105,7 +113,7 @@ const useStyles = makeStyles(theme => ({
 	pointBtn: {
 		width: "10em",
 		marginRight: "2em"
-	}
+	},
 }));
 
 function MainLayout({ match }) {
@@ -113,6 +121,7 @@ function MainLayout({ match }) {
 	const [pageName, setPageName] = React.useState("");
 	const [open, setOpen] = React.useState(true);
 	const [point, setPoint] = React.useState(0);
+	const [userId, setUserId] = React.useState("");
 	const handleDrawerOpen = () => {
 		setOpen(true);
 	};
@@ -121,10 +130,11 @@ function MainLayout({ match }) {
 	};
 	Axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/current`)
 	  .then(response => {
-		  setPoint(response.data.point &&  response.data.point !== 'null' ? response.data.point : point);
+		  setPoint(response.data.point && response.data.point !== 'null' ? response.data.point : point);
+		  setUserId(response.data.id && response.data.id !== 'null' ? response.data.id : userId);
 	  }).catch(err => {
 		util.clearAccessToken();
-		window.location.href = "/signin";
+		window.location.href = "/";
 	})
 
 	return (
@@ -148,7 +158,7 @@ function MainLayout({ match }) {
 				  <Button variant="contained" color="secondary"
 						  onClick={() => {
 							  util.clearAccessToken();
-							  window.location.href = "/signin";
+							  window.location.href = "/";
 						  }}
 				  >Logout</Button>
 			  </Toolbar>
@@ -161,6 +171,9 @@ function MainLayout({ match }) {
 			open={open}
 		  >
 			  <div className={classes.toolbarIcon}>
+				  <Typography component="h1" variant="h5" color="inherit" noWrap className={classes.title}>
+					  <Link to="/">OffRewards</Link>
+				  </Typography>
 				  <IconButton onClick={handleDrawerClose}>
 					  <ChevronLeftIcon/>
 				  </IconButton>
@@ -190,6 +203,9 @@ function MainLayout({ match }) {
 					  </Route>
 					  <Route path={`${match.path}/setting`}>
 						  <Setting setPageName={setPageName}/>
+					  </Route>
+					  <Route path={`${match.path}/referral`}>
+						  <ReferralLink userId={userId} setPageName={setPageName}/>
 					  </Route>
 				  </Switch>
 

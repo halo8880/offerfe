@@ -44,6 +44,7 @@ function ClaimPrize({ match, setPageName }) {
 	return <>
 		<Paper className={classes.selectPrize}>
 			<Title>Prize Goal</Title>
+			<Divider className={classes.divider}/>
 			<Grid container spacing={4}>
 				<Grid item xs={6} md={3} lg={3}>
 					<img className={classes.prizeGoalImage} src={selectedPrize.image}/>
@@ -103,6 +104,7 @@ function ClaimPrize({ match, setPageName }) {
 					<Button
 					  className={classes.claimBtn}
 					  variant="contained" color="primary"
+					  onClick={handleSubmit}
 					>
 						Submit Prize Request
 					</Button>
@@ -111,10 +113,10 @@ function ClaimPrize({ match, setPageName }) {
 		</Paper>
 		<Paper className={classes.selectPrize}>
 			<Title>Select Your Prize Goal</Title>
-			<Divider/>
+			<Divider className={classes.divider}/>
 			<Grid container spacing={4}>
 				{prizeTypes.map(type =>
-				  <Grid key={util.uuidv4()} item xs={2} sm={2} md={2}>
+				  <Grid key={util.uuidv4()} item xs={4} sm={4} md={2}>
 					  <img
 						onClick={() => {
 							setSelectedPrize(type);
@@ -130,7 +132,9 @@ function ClaimPrize({ match, setPageName }) {
 
 const useStyles = makeStyles(theme => ({
 	selectPrize: {
-		padding: "10px"
+		marginBottom: "10px",
+		padding: "10px",
+		minHeight: "290px"
 	},
 	prizeImage: {
 		width: "100%",
@@ -155,6 +159,9 @@ const useStyles = makeStyles(theme => ({
 		width: "20em",
 		height: "3em",
 		marginTop: "2em"
+	},
+	divider: {
+		marginBottom: "2rem"
 	}
 }));
 

@@ -4,17 +4,22 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Bookmark from '@material-ui/icons/Bookmark';
+import LinkIcon from '@material-ui/icons/Link';
 import Settings from '@material-ui/icons/Settings';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import ReferralLink from './ReferralLink';
 
 const useStyles = makeStyles(theme => ({
 	sidebar: {
 		"& a": {
 			textDecoration: "none",
-			color: "inherit"
+			color: "#337af7"
+		},
+		"& svg": {
+			color: "#337af7"
 		}
 	}
 }));
@@ -35,7 +40,7 @@ export function SideBar({ match }) {
 				<ListItemIcon>
 					<ShoppingCartIcon/>
 				</ListItemIcon>
-				<ListItemText primary="Offer Markerplace"/>
+				<ListItemText primary="Top Offers"/>
 			</ListItem>
 		</Link>
 		<Link to={`${match.url}/offerwall`}>
@@ -60,6 +65,14 @@ export function SideBar({ match }) {
 					<Settings/>
 				</ListItemIcon>
 				<ListItemText primary="Settings"/>
+			</ListItem>
+		</Link>
+		<Link to={`${match.url}/referral`}>
+			<ListItem button>
+				<ListItemIcon>
+					<LinkIcon/>
+				</ListItemIcon>
+				<ListItemText primary="Referral Link"/>
 			</ListItem>
 		</Link>
 	</div>
