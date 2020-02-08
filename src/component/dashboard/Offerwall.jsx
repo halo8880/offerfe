@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -9,10 +9,21 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link, withRouter } from 'react-router-dom';
 import Title from './Title';
+import * as Axios from '../../config/axios';
 
 function Offerwall({ match, setPageName }) {
 	const classes = useStyles();
+	const [listWalls, setListWalls] = useState([]);
 	setPageName("Offerwall");
+
+	useEffect(() => {
+		Axios.get(`${process.env.REACT_APP_API_BASE_URL}/network/wall`)
+		  .then(response => {
+			  setListWalls(response.data);
+		  });
+
+	}, []);
+
 	return <Grid container spacing={3} className={classes.offerWallGrid}>
 		<Grid item xs={12} md={12} lg={12}>
 			<Paper className={classes.sectionHeader}>
@@ -21,38 +32,23 @@ function Offerwall({ match, setPageName }) {
 				</Title>
 				<Divider className={classes.divider}/>
 				<Grid container spacing={3} className={classes.offerWallGrid}>
-					<Grid item xs={12} sm={6} md={3} className={classes.offerWallGridItem}>
-						<Link to={`${match.url}/adworkmedia`}>
+					{listWalls.map(wall =>
+					  <Grid item xs={12} sm={6} md={3} className={classes.offerWallGridItem}>
+						<Link to={`${match.url}/${wall.networkName}`}>
 							<Card className={classes.card}>
 								<CardMedia
 								  className={classes.cardMedia}
-								  image="/adworkmedia.jpg"
-								  title="Adworkmedia"
+								  image={wall.image}
+								  title={wall.networkName}
 								/>
 								<CardContent className={classes.cardContent}>
 									<Typography variant="h5" component="h5">
-										Adworkmedia
+										{wall.networkName}
 									</Typography>
 								</CardContent>
 							</Card>
 						</Link>
-					</Grid>
-					<Grid item xs={12} sm={6} md={3}>
-						<Link to={`${match.url}/cpalead`}>
-							<Card className={classes.card}>
-								<CardMedia
-								  className={classes.cardMedia}
-								  image="https://pointsprizes.s3-accelerate.amazonaws.com/img/networks/cpalead.jpg"
-								  title="CPALead"
-								/>
-								<CardContent className={classes.cardContent}>
-									<Typography variant="h5" component="h5">
-										CPALead
-									</Typography>
-								</CardContent>
-							</Card>
-						</Link>
-					</Grid>
+					</Grid>)}
 				</Grid>
 			</Paper>
 		</Grid>
