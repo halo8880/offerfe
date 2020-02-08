@@ -10,7 +10,6 @@ import AttachMoney from '@material-ui/icons/AttachMoney';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import ReferralLink from './ReferralLink';
 
 const useStyles = makeStyles(theme => ({
 	sidebar: {
