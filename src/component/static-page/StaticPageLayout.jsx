@@ -10,6 +10,7 @@ import * as Axios from '../../config/axios';
 import * as util from '../Util';
 import clsx from 'clsx';
 import Footer from "../dashboard/Footer";
+import { HelpOutline, OndemandVideo, TrendingUp, VolumeUp } from "@material-ui/icons";
 
 export default function StaticPageLayout({ match }) {
 	const classes = useStyles();
@@ -96,6 +97,38 @@ export default function StaticPageLayout({ match }) {
 						You don't need to manage your password, we manage everything through your email address.
 						Just enter your email address and start earning with us!
 					</Typography>
+				</Grid>
+			</Grid>
+		</Container>
+		<Container maxWidth={"xl"} className={classes.paragraphContainer}>
+			<Grid component={"div"} container spacing={3} className={classes.textGrid}>
+				<Grid item xs={3} sm={3} md={3} lg={3} className={classes.infoGridContainer}>
+					<VolumeUp className={classes.offerIcon}/>
+					<h1 className={classes.paragraphTitle}>Offer Walls</h1>
+					<p className={classes.paragraphContent}>
+						Advertisers want to reward you for learning about their free products and services.
+					</p>
+				</Grid>
+				<Grid item xs={3} sm={3} md={3} lg={3} className={classes.infoGridContainer}>
+					<HelpOutline className={classes.surveyIcon}/>
+					<h1 className={classes.paragraphTitle}>Survey Routers</h1>
+					<p className={classes.paragraphContent}>
+						Brands want to understand their customers and improve their products with paid surveys.
+					</p>
+				</Grid>
+				<Grid item xs={3} sm={3} md={3} lg={3} className={classes.infoGridContainer}>
+					<OndemandVideo className={classes.videoIcon}/>
+					<h1 className={classes.paragraphTitle}>Video Ads</h1>
+					<p className={classes.paragraphContent}>
+						Advertisers will pay you to watch their videos. Discover new brands and entertainment.
+					</p>
+				</Grid>
+				<Grid item xs={3} sm={3} md={3} lg={3} className={classes.infoGridContainer}>
+					<TrendingUp className={classes.bonusIcon}/>
+					<h1 className={classes.paragraphTitle}>Daily Bonuses</h1>
+					<p className={classes.paragraphContent}>
+						Even if you live in a country with less surveys, you can earn free daily bonuses and giveaways.
+					</p>
 				</Grid>
 			</Grid>
 		</Container>
@@ -219,5 +252,38 @@ const useStyles = makeStyles(theme => ({
 		"&:active": {
 			background: "red"
 		}
+	},
+	paragraphContainer: {
+		background: "#fff",
+		padding: "50px",
+		borderBottom: "1px solid #e7e7e7",
+		paddingLeft: "20%",
+		paddingRight: "20%"
+	},
+	paragraphTitle: {
+		marginTop: "0"
+	},
+	paragraphContent: {
+		fontSize: "18px",
+		fontWeight: "400"
+	},
+	infoGridContainer: {
+		textAlign: "center",
+		"& svg": {
+			width: "4em",
+			height: "4em"
+		}
+	},
+	offerIcon: {
+		color: "blue"
+	},
+	surveyIcon: {
+		color: "green"
+	},
+	videoIcon: {
+		color: "red"
+	},
+	bonusIcon: {
+		color: "orange"
 	}
 }));
