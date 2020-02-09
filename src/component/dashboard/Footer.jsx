@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -40,21 +40,21 @@ function Footer({ match }) {
                             <div className={classes.footerInfoContainer}>
                                 <Link to={`${staticUrl}/term`} className={classes.footerLink}>Term Of Use</Link>
                                 <Link to={`${staticUrl}/privacy`} className={classes.footerLink}>Privacy Policy</Link>
-                                <Link to={`${staticUrl}/offers`} className={classes.footerLink}>Contact Us</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Help Center</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Video Tutorials</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Earnings Disclaimer</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Brand Guidelines</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Press Coverage</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Advertise Here</Link>
+                                <Link to={`${staticUrl}/contact-us`} className={classes.footerLink}>Contact Us</Link>
+                                <Link to={`/`} className={classes.footerLink}>Help Center</Link>
+                                <Link to={`/`} className={classes.footerLink}>Video Tutorials</Link>
+                                <Link to={`/`} className={classes.footerLink}>Earnings Disclaimer</Link>
+                                <Link to={`/`} className={classes.footerLink}>Brand Guidelines</Link>
+                                <Link to={`/`} className={classes.footerLink}>Press Coverage</Link>
+                                <Link to={`/`} className={classes.footerLink}>Advertise Here</Link>
                             </div>
                         </Grid>
                         <Grid item xs={6} sm={6} md={6} lg={6}>
                             <div className={classes.footerInfoContainer}>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Affiliate Program</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Paid Surveys</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Newsletter</Link>
-                                <Link to={`${match.url}/offers`} className={classes.footerLink}>Payment Proof</Link>
+                                <Link to={`/`} className={classes.footerLink}>Affiliate Program</Link>
+                                <Link to={`/`} className={classes.footerLink}>Paid Surveys</Link>
+                                <Link to={`/`} className={classes.footerLink}>Newsletter</Link>
+                                <Link to={`/`} className={classes.footerLink}>Payment Proof</Link>
                             </div>
                         </Grid>
                     </Grid>

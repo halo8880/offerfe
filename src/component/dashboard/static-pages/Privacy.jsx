@@ -4,12 +4,14 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import Grid from "@material-ui/core/Grid";
 import LandingPage from "./LandingPage";
 import PrivacyTable from "./PrivacyTable";
+import PageHeader from "./PageHeader";
 
 export default function Privacy(props) {
     const classes = useStyles();
     const [email, setEmail] = useState("");
     return (
         <LandingPage>
+            <PageHeader title="Privacy Policy"/>
             <Container className={classes.paragraphContainer}>
                 <h1 className={classes.paragraphTitle}>Things we never do</h1>
                 <Grid component={"div"} container spacing={3} className={classes.textGrid}>

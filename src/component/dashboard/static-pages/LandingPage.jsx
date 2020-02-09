@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
-import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { Link, Route, Switch, withRouter } from 'react-router-dom';
-import Term from "./Term";
+import { Link, withRouter } from 'react-router-dom';
 import Footer from "../Footer";
-import Privacy from "./Privacy";
 
 function LandingPage(props) {
     const classes = useStyles();
-    const staticUrl = "static";
 
     return <>
         <AppBar className={classes.appBar}>
@@ -26,7 +22,7 @@ function LandingPage(props) {
                         <Link to="/">Blog</Link>
                     </Typography>
                     <Typography component="p" variant="body1" color="inherit" noWrap className={classes.title}>
-                        <Link to="/">About us</Link>
+                        <Link to="/static/about-us">About us</Link>
                     </Typography>
                 </div>
             </Toolbar>

@@ -2,11 +2,13 @@ import React from 'react';
 import Container from '@material-ui/core/Container';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import LandingPage from "./LandingPage";
+import PageHeader from "./PageHeader";
 
 export default function Term(props) {
 	const classes = useStyles();
 	return (
 		<LandingPage>
+			<PageHeader title="Terms Of Use"/>
 			<Container className={classes.paragraphContainer}>
 				<h1 className={classes.paragraphTitle}>Preliminary</h1>
 				<p className={classes.paragraphContent}>

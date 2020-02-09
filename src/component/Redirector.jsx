@@ -5,6 +5,8 @@ import StaticPageLayout from './static-page/StaticPageLayout';
 import * as util from './Util';
 import Term from "./dashboard/static-pages/Term";
 import Privacy from "./dashboard/static-pages/Privacy";
+import ContactUs from "./dashboard/static-pages/ContacUs";
+import AboutUs from "./dashboard/static-pages/AboutUs";
 
 export default function Redirector() {
 	const refBy = util.getRefByFromQueryString();
@@ -21,6 +23,12 @@ export default function Redirector() {
 			</Route>
 			<Route path="/static/term" exact>
 				<Term/>
+			</Route>
+			<Route path="/static/contact-us" exact>
+				<ContactUs/>
+			</Route>
+			<Route path="/static/about-us" exact>
+				<AboutUs/>
 			</Route>
 			<Route path="/" component={StaticPageLayout}/>
 		</Switch>
